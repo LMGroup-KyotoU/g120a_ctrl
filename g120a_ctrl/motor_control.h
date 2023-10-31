@@ -1,0 +1,21 @@
+#ifndef MOTOR_CONTROL_H
+#define MOTOR_CONTROL_H
+
+#include <Arduino.h>
+
+#define PIN_DRV_EN 15
+
+static uint8_t cmd_clrw[10] =     {0x00, 0x52, 0x70, 0x19, 0x00, 0x00, 0x00, 0x00, 0x86, 0x00}; // Clear driver warning
+static uint8_t cmd_tacc[10] =     {0x00, 0x54, 0x70, 0x99, 0x00, 0x00, 0x00, 0x00, 0xC9, 0x00}; // Trapezoid acc DEC = rps/s * 256 * 4096
+static uint8_t cmd_tdacc[10] =    {0x00, 0x54, 0x70, 0x9a, 0x00, 0x00, 0x00, 0x00, 0xC9, 0x00}; // Trapezoid Deacc DEC = rps/s * 256 * 4096
+static uint8_t cmd_mode[10] =     {0x00, 0x51, 0x70, 0x17, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00}; // Working mode set to speed control with acceleration
+static uint8_t cmd_en[10] =       {0x00, 0x52, 0x70, 0x19, 0x00, 0x00, 0x00, 0x00, 0x0F, 0x00}; // Motor enable
+
+// Public
+void readWriteMotor(uint8_t id, uint8_t* send_buf, uint8_t* recv_buf);
+void writeMotor(uint8_t id, uint8_t* send_buf);
+void initMotorSerial();
+void initMotor(uint8_t id);
+void motorSetRpm(uint8_t id, int32_t rpm);
+
+#endif
