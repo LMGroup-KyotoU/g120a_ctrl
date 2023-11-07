@@ -44,7 +44,11 @@ public:
   Vsc3Gamepad();
   void update();;
   bool isBtnPressed(uint16_t btnCode);
-
+  int8_t getLeftX();
+  int8_t getLeftY();
+  int8_t getRightX();
+  int8_t getRightY();
+  
 private:
   /** PRIVATE CONSTANTS **/
   static const uint8_t CMD_config_mode_enter[];

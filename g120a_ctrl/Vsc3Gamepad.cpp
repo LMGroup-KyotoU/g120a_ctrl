@@ -79,3 +79,19 @@ void Vsc3Gamepad::update() {
 bool Vsc3Gamepad::isBtnPressed(uint16_t btnCode) {
   return (m_gamepad.button & btnCode) != 0x00;
 }
+
+int8_t Vsc3Gamepad::getLeftX() {
+  return m_gamepad.left_stick.x;
+}
+
+int8_t Vsc3Gamepad::getLeftY() {
+  return m_gamepad.left_stick.y;
+}
+
+int8_t Vsc3Gamepad::getRightX() {
+  return m_gamepad.right_stick.x;
+}
+
+int8_t Vsc3Gamepad::getRightY() {
+  return m_gamepad.right_stick.y;
+}

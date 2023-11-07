@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <HardwareSerial.h>
+#include <vector>
 #include "G120aMotor.h"
 
 /** DEFINE **/
@@ -12,7 +13,14 @@ public:
   /** PUBLIC FUNCTIONS **/
   G120aMotionController(HardwareSerial& motorSerial);
   ~G120aMotionController();
-  void setMotion(float spd_lin, float spd_rot);
+  void setMotion(double spd_lin, double spd_rot);
+  void updateOdom();
+  std::pair<double, double> _getLocalVelocity();
+
+  /** PUBLIC VARIABLES **/
+  double accu_rot_z = 0.0; // Accumulated rotation in z direction [rad]
+  double accu_pos_x = 0.0; // Accumulated position in x direction [m]
+  double accu_pos_y = 0.0; // Accumulated position in y direction [m]
 
 private:
   /** PRIVATE CONSTS **/
@@ -20,11 +28,8 @@ private:
   static const uint8_t MOTOR_ID_FR = 2;
   static const uint8_t MOTOR_ID_RL = 3;
   static const uint8_t MOTOR_ID_RR = 4;
-  static constexpr float WHEEL_CIRCUMFERENCE = 0.63774; // Circumference of the tire in m
-  static constexpr float WHEEL_Y = 0.18;  // Half the distance between left and rigth wheels in m
+  static constexpr float WHEEL_Y = 0.18;  // Half the distance between left and right wheels in m
   static constexpr float WHEEL_X = 0.20;  // Half the distance between front and rear wheels in m
-  static constexpr uint32_t ENC_PER_TURN = 4096;
-  static constexpr float ENC_PER_MM = static_cast<float>(ENC_PER_TURN) / WHEEL_CIRCUMFERENCE;
 
   /** PRIVATE CLASSES **/
   HardwareSerial& motorSerial;
@@ -32,6 +37,9 @@ private:
   G120aMotor* m_motorFR;
   G120aMotor* m_motorRL;
   G120aMotor* m_motorRR;
+
+  /** PRIVATE VARIABLES **/
+  uint32_t last_odom_read_time = 0; //[usec]
 };
 
 #endif /* G120A_MOTION_CONTROLLER_H */
